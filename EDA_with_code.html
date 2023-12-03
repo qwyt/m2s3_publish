@@ -7568,7 +7568,9 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython2"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-<span class="n">source_df_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">source_df</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">source_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">source_df_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">source_df</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">source_df</span><span class="o">.</span><span class="n">columns</span>
+<span class="p">)</span>
 
 <span class="n">scaler_preproc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">ScalerPreprocessor</span><span class="o">.</span><span class="n">factory</span><span class="p">()()</span>
 <span class="n">source_df_std</span> <span class="o">=</span> <span class="n">scaler_preproc</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_df</span><span class="p">(</span><span class="n">source_df</span><span class="p">,</span> <span class="s2">"quality"</span><span class="p">),</span> <span class="s2">"quality"</span><span class="p">)</span>
@@ -7601,46 +7603,60 @@ a.anchor-link {
 <div class="highlight hl-ipython2"><pre><span></span><span class="n">num_vars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_df_independent</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="n">num_vars</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">num_vars</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Comparative Analysis of Wine Attributes'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Comparative Analysis of Wine Attributes"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
 <span class="n">default_blue</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">source_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">"quality_over_7_or_more"</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
     <span class="n">mean_val</span> <span class="o">=</span> <span class="n">source_df</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">std_dev</span> <span class="o">=</span> <span class="n">source_df</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 
     <span class="n">stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">normaltest</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
-    <span class="n">normality</span> <span class="o">=</span> <span class="s1">'Normal'</span> <span class="k">if</span> <span class="n">p_val</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s1">'Not normal'</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-                    <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">normality</span><span class="si">}</span><span class="se">\n</span><span class="s2">P-val: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_val</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">Mean: </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">Std Dev: </span><span class="si">{</span><span class="n">std_dev</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-                    <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0.3"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">))</span>
+    <span class="n">normality</span> <span class="o">=</span> <span class="s2">"Normal"</span> <span class="k">if</span> <span class="n">p_val</span> <span class="o">&gt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">"Not normal"</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">normality</span><span class="si">}</span><span class="se">\n</span><span class="s2">P-val: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_val</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">Mean: </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">Std Dev: </span><span class="si">{</span><span class="n">std_dev</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0.3"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">),</span>
+    <span class="p">)</span>
 
-    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">source_df_scaled</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span>
-                <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                <span class="n">fliersize</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">default_blue</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,)),</span>
-                <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">default_blue</span><span class="p">),</span>
-                <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">default_blue</span><span class="p">),</span>
-                <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'white'</span><span class="p">))</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">source_df_scaled</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">fliersize</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">default_blue</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.3</span><span class="p">,)),</span>
+        <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">default_blue</span><span class="p">),</span>
+        <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">default_blue</span><span class="p">),</span>
+        <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"white"</span><span class="p">),</span>
+    <span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
     <span class="n">skewness</span> <span class="o">=</span> <span class="n">skew</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
     <span class="n">excess_kurtosis</span> <span class="o">=</span> <span class="n">kurtosis</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="n">variable</span><span class="p">])</span>
 
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
-                    <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Skew: </span><span class="si">{</span><span class="n">skewness</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">Kurt: </span><span class="si">{</span><span class="n">excess_kurtosis</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-                    <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0.3"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">))</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Skew: </span><span class="si">{</span><span class="n">skewness</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">Kurt: </span><span class="si">{</span><span class="n">excess_kurtosis</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0.3"</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">),</span>
+    <span class="p">)</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Original Data Distribution (KDE)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Standardized (z-score)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Original Data Distribution (KDE)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Standardized (z-score)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -7704,32 +7720,51 @@ have very high values. This indicates a high likelihood of outliers, as more dat
 <div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">],</span> <span class="n">source_df</span><span class="p">[</span><span class="s1">'residual sugar'</span><span class="p">])</span>
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">],</span> <span class="n">source_df</span><span class="p">[</span><span class="s2">"residual sugar"</span><span class="p">])</span>
 
-<span class="n">joint_plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">'alcohol'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'residual sugar'</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'hex'</span><span class="p">)</span>
+<span class="n">joint_plot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">"alcohol"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"residual sugar"</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"hex"</span><span class="p">)</span>
 
-<span class="n">default_text_color</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'axes.labelcolor'</span><span class="p">]</span>
-<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1">#  dry </span>
-<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1">#  sweet </span>
+<span class="n">default_text_color</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">"axes.labelcolor"</span><span class="p">]</span>
+<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>  <span class="c1">#  dry</span>
+<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="p">)</span>  <span class="c1">#  sweet</span>
 
-<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
-                         <span class="n">s</span><span class="o">=</span><span class="s1">'Dry Wine Cutoff'</span><span class="p">,</span>
-                         <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">10.5</span><span class="p">,</span>
-                         <span class="n">s</span><span class="o">=</span><span class="s1">'Semi-dry Wine Cutoff'</span><span class="p">,</span>
-                         <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span>
-                         <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="s2">"Dry Wine Cutoff"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="mf">10.5</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="s2">"Semi-dry Wine Cutoff"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">),</span>
-                         <span class="n">y</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s1">'residual sugar'</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">),</span>
-                         <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Pearson r: </span><span class="si">{</span><span class="n">correlation</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s1">p-value: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
-                         <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+<span class="n">joint_plot</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="n">y</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"residual sugar"</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Pearson r: </span><span class="si">{</span><span class="n">correlation</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">p-value: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_value</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">default_text_color</span><span class="p">,</span>
+    <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span>
+    <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Alcohol (%)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Residual Sugar (g/L)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Alcohol (%)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Residual Sugar (g/L)"</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Alcohol vs Residual Sugar'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Alcohol vs Residual Sugar"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -7768,45 +7803,51 @@ have very high values. This indicates a high likelihood of outliers, as more dat
 <div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span>
-                    <span class="n">x</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">,</span>
-                    <span class="n">y</span><span class="o">=</span><span class="s2">"alcohol"</span><span class="p">,</span>
-                    <span class="c1"># hue="smoker",</span>
-                    <span class="c1"># split=True,</span>
-                    <span class="n">inner</span><span class="o">=</span><span class="s2">"quart"</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="c1"># palette={"Yes": "g", "No": ".35"}</span>
-                    <span class="p">)</span>
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"alcohol"</span><span class="p">,</span>
+    <span class="c1"># hue="smoker",</span>
+    <span class="c1"># split=True,</span>
+    <span class="n">inner</span><span class="o">=</span><span class="s2">"quart"</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># palette={"Yes": "g", "No": ".35"}</span>
+<span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Distribution of Alcohol Content Relative to Quality'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Distribution of Alcohol Content Relative to Quality"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'quality'</span><span class="p">)]</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"quality"</span><span class="p">)]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Kruskal-Wallis H Test (non-parametric version of ANOVA)"</span><span class="p">)</span>
 <span class="n">kruskal_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">kruskal</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Statistic: </span><span class="si">{</span><span class="n">kruskal_statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Spearman's rank correlation "</span><span class="p">)</span>
-<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s1">'quality'</span><span class="p">],</span> <span class="n">source_df</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">])</span>
+<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">],</span> <span class="n">source_df</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Statistic: </span><span class="si">{</span><span class="n">correlation</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Only Quality &lt; 7:"</span><span class="p">)</span>
 <span class="n">source_df_less_7</span> <span class="o">=</span> <span class="n">source_df</span><span class="p">[</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df_less_7</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'quality'</span><span class="p">)]</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df_less_7</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"quality"</span><span class="p">)]</span>
 <span class="n">kruskal_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">kruskal</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kruskal-Wallis statistic: </span><span class="si">{</span><span class="n">kruskal_statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">source_df_less_7</span><span class="p">[</span><span class="s1">'quality'</span><span class="p">],</span> <span class="n">source_df_less_7</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">])</span>
+<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span>
+    <span class="n">source_df_less_7</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">],</span> <span class="n">source_df_less_7</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Spearman correlation: </span><span class="si">{</span><span class="n">correlation</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Only Quality &lt; 6:"</span><span class="p">)</span>
 <span class="n">source_df_less_6</span> <span class="o">=</span> <span class="n">source_df</span><span class="p">[</span><span class="n">source_df</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">]</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df_less_6</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'quality'</span><span class="p">)]</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">source_df_less_6</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"quality"</span><span class="p">)]</span>
 <span class="n">kruskal_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">kruskal</span><span class="p">(</span><span class="o">*</span><span class="n">groups</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kruskal-Wallis statistic: </span><span class="si">{</span><span class="n">kruskal_statistic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">source_df_less_6</span><span class="p">[</span><span class="s1">'quality'</span><span class="p">],</span> <span class="n">source_df_less_6</span><span class="p">[</span><span class="s1">'alcohol'</span><span class="p">])</span>
+<span class="n">correlation</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span>
+    <span class="n">source_df_less_6</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">],</span> <span class="n">source_df_less_6</span><span class="p">[</span><span class="s2">"alcohol"</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Spearman correlation: </span><span class="si">{</span><span class="n">correlation</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7889,7 +7930,7 @@ Spearman correlation: -0.106, P-value: 0.00
 <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">"ch:s=-.2,r=.6"</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">vmin</span><span class="p">)</span>
+<span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">"grey"</span><span class="p">,</span> <span class="n">vmin</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">annot</span><span class="p">(</span><span class="n">corr_val</span><span class="p">):</span>
@@ -7899,17 +7940,21 @@ Spearman correlation: -0.106, P-value: 0.00
         <span class="k">return</span> <span class="s2">""</span>
 
 
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span>
-            <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
-            <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
-            <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-            <span class="n">annot</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">annot</span><span class="p">)(</span><span class="n">corr</span><span class="p">),</span>
-            <span class="n">fmt</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span>
-            <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
-            <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"shrink"</span><span class="p">:</span> <span class="mf">.5</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+    <span class="n">corr</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+    <span class="n">annot</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">annot</span><span class="p">)(</span><span class="n">corr</span><span class="p">),</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+    <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span>
+    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"shrink"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+<span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Absolute Correlation Between Wine Attributes'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Absolute Correlation Between Wine Attributes"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7963,22 +8008,45 @@ Spearman correlation: -0.106, P-value: 0.00
 <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pairs_to_plot</span><span class="p">):</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="s1">'quality_binary'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">source_df_qual</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">line_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">})</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">hue</span><span class="o">=</span><span class="s2">"quality_binary"</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">source_df_qual</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">source_df</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"grey"</span><span class="p">,</span>
+        <span class="n">line_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"alpha"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+    <span class="p">)</span>
 
-    <span class="n">corr_coeff</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">source_df_qual</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">source_df_qual</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
-    <span class="n">r_squared</span> <span class="o">=</span> <span class="n">corr_coeff</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">corr_coeff</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">spearmanr</span><span class="p">(</span>
+        <span class="n">source_df_qual</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">source_df_qual</span><span class="p">[</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="p">)</span>
+    <span class="n">r_squared</span> <span class="o">=</span> <span class="n">corr_coeff</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">significance</span> <span class="o">=</span> <span class="s2">"sig."</span> <span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">""</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s1">'R² = </span><span class="si">{</span><span class="n">r_squared</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s1">P-v = </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
-                     <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">'axes fraction'</span><span class="p">,</span>
-                     <span class="n">ha</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'top'</span><span class="p">,</span>
-                     <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s1">'round,pad=0.25'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"R² = </span><span class="si">{</span><span class="n">r_squared</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">P-v = </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+        <span class="n">xycoords</span><span class="o">=</span><span class="s2">"axes fraction"</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">"round,pad=0.25"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">ncols</span><span class="p">):</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Plots of Correlated (&gt;.3) Variable Pairs (Quality &gt; 6 Marked)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+    <span class="s2">"Plots of Correlated (&gt;.3) Variable Pairs (Quality &gt; 6 Marked)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span>
+<span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -8035,7 +8103,9 @@ Spearman correlation: -0.106, P-value: 0.00
 
 <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span><span class="n">pca_df</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'PCA, 2 Components'</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span>
+    <span class="n">pca_df</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"PCA, 2 Components"</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8086,35 +8156,44 @@ Spearman correlation: -0.106, P-value: 0.00
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"PC</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
-<span class="n">_explained_pc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'var'</span><span class="p">:</span> <span class="n">_pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">,</span>
-                              <span class="s1">'PC'</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
+<span class="n">_explained_pc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"var"</span><span class="p">:</span> <span class="n">_pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">,</span> <span class="s2">"PC"</span><span class="p">:</span> <span class="n">labels</span><span class="p">})</span>
 
-<span class="n">_explained_pc</span><span class="p">[</span><span class="s1">'cum_var'</span><span class="p">]</span> <span class="o">=</span> <span class="n">_explained_pc</span><span class="p">[</span><span class="s1">'var'</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="n">_explained_pc</span><span class="p">[</span><span class="s2">"cum_var"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_explained_pc</span><span class="p">[</span><span class="s2">"var"</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 <span class="n">_explained_pc</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">barplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'PC'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'var'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">_explained_pc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'skyblue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Individual Variance'</span><span class="p">)</span>
+<span class="n">barplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"var"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">_explained_pc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"skyblue"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Individual Variance"</span>
+<span class="p">)</span>
 <span class="n">barplot</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>  <span class="c1"># Adjust as needed</span>
 <span class="n">barplot</span><span class="o">.</span><span class="n">legend_</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># Remove the default legend for the bar plot</span>
 
 <span class="n">lineplot_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 
-<span class="n">lineplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'PC'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'cum_var'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">_explained_pc</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>
-                        <span class="n">label</span><span class="o">=</span><span class="s1">'Cumulative Variance'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">lineplot_ax</span><span class="p">)</span>
+<span class="n">lineplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">"cum_var"</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">_explained_pc</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+    <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">"Cumulative Variance"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">lineplot_ax</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">lineplot_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>  <span class="c1"># Adjust as needed</span>
 <span class="n">lineplot_ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">lineplot_ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 
-<span class="n">barplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Individual Variance'</span><span class="p">)</span>
-<span class="n">lineplot_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Cumulative Variance'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'PCA Explained Variance and Cumulative Variance'</span><span class="p">)</span>
+<span class="n">barplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Individual Variance"</span><span class="p">)</span>
+<span class="n">lineplot_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Cumulative Variance"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"PCA Explained Variance and Cumulative Variance"</span><span class="p">)</span>
 <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">[</span><span class="n">barplot</span><span class="p">,</span> <span class="n">lineplot_ax</span><span class="p">]:</span>
     <span class="n">h</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
     <span class="n">handles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="n">labels</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"upper left"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -8165,8 +8244,9 @@ Spearman correlation: -0.106, P-value: 0.00
 
 <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">preprocessing</span><span class="p">)</span>
 
-<span class="n">df_reduced_tsne</span><span class="p">,</span> <span class="n">_t_sne</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">TSNEPreprocessor</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)()</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">source_df_std</span><span class="p">,</span>
-                                                                                           <span class="n">target_var</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">)</span>
+<span class="n">df_reduced_tsne</span><span class="p">,</span> <span class="n">_t_sne</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">TSNEPreprocessor</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span>
+    <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)()</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">source_df_std</span><span class="p">,</span> <span class="n">target_var</span><span class="o">=</span><span class="s2">"quality"</span><span class="p">)</span>
 <span class="n">df_reduced_tsne</span><span class="p">[</span><span class="s2">"quality_bin"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_reduced_tsne</span><span class="p">[</span><span class="s2">"quality"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">bin_quality</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8221,13 +8301,23 @@ Spearman correlation: -0.106, P-value: 0.00
 
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 
-<span class="n">legend_labels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'0'</span><span class="p">:</span> <span class="s2">"&lt;=6"</span><span class="p">,</span>
-                 <span class="s1">'1'</span><span class="p">:</span> <span class="s2">"&gt;6"</span><span class="p">}</span>
+<span class="n">legend_labels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"0"</span><span class="p">:</span> <span class="s2">"&lt;=6"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">:</span> <span class="s2">"&gt;6"</span><span class="p">}</span>
 
-<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span><span class="n">df_reduced_tsne</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"quality_bin"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'t-SNE, 2 Components'</span><span class="p">,</span>
-                             <span class="n">legend_labels</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span><span class="n">pca_df</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">"quality_bin"</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">'PCA, 2 Components'</span><span class="p">,</span>
-                             <span class="n">legend_labels</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span>
+    <span class="n">df_reduced_tsne</span><span class="p">,</span>
+    <span class="n">target</span><span class="o">=</span><span class="s2">"quality_bin"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"t-SNE, 2 Components"</span><span class="p">,</span>
+    <span class="n">legend_labels</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span>
+    <span class="n">pca_df</span><span class="p">,</span>
+    <span class="n">target</span><span class="o">=</span><span class="s2">"quality_bin"</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"PCA, 2 Components"</span><span class="p">,</span>
+    <span class="n">legend_labels</span><span class="o">=</span><span class="n">legend_labels</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Comparison of Component Analysis Methods"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -8362,7 +8452,7 @@ Davies Bouldin = 20%</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython2"><pre><span></span><span class="n">clustering_res_df</span><span class="p">[</span><span class="n">clustering_res_df</span><span class="p">[</span><span class="s1">'n_clusters'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+<div class="highlight hl-ipython2"><pre><span></span><span class="n">clustering_res_df</span><span class="p">[</span><span class="n">clustering_res_df</span><span class="p">[</span><span class="s2">"n_clusters"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -9110,15 +9200,13 @@ Davies Bouldin = 20%</p>
     <span class="s2">"score_silhouette"</span><span class="p">:</span> <span class="s2">"0.253836"</span><span class="p">,</span>
     <span class="s2">"score_calinski_harabasz"</span><span class="p">:</span> <span class="s2">"479.193982"</span><span class="p">,</span>
     <span class="s2">"score_davies_bouldin"</span><span class="p">:</span> <span class="s2">"1.088382"</span><span class="p">,</span>
-    <span class="s2">"score"</span><span class="p">:</span> <span class="s2">"0.738100"</span>
+    <span class="s2">"score"</span><span class="p">:</span> <span class="s2">"0.738100"</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">pca_df_3_comp</span> <span class="o">=</span> <span class="n">selected_pca_df</span> <span class="o">=</span> <span class="n">pca_df</span><span class="p">[[</span><span class="s1">'PC1'</span><span class="p">,</span> <span class="s1">'PC2'</span><span class="p">,</span> <span class="s1">'PC3'</span><span class="p">]]</span>
+<span class="n">pca_df_3_comp</span> <span class="o">=</span> <span class="n">selected_pca_df</span> <span class="o">=</span> <span class="n">pca_df</span><span class="p">[[</span><span class="s2">"PC1"</span><span class="p">,</span> <span class="s2">"PC2"</span><span class="p">,</span> <span class="s2">"PC3"</span><span class="p">]]</span>
 
-<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">pca_df_3_comp</span><span class="p">,</span>
-            <span class="n">method</span><span class="o">=</span><span class="n">cluster_settings</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span>
-            <span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">pca_df_3_comp</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cluster_settings</span><span class="p">[</span><span class="s2">"method"</span><span class="p">])</span>
 
-<span class="n">clusters</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">cluster_settings</span><span class="p">[</span><span class="s2">"cutoff"</span><span class="p">],</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">'distance'</span><span class="p">)</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">cluster_settings</span><span class="p">[</span><span class="s2">"cutoff"</span><span class="p">],</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">"distance"</span><span class="p">)</span>
 
 <span class="n">df_reduced_tsne_cluster</span> <span class="o">=</span> <span class="n">df_reduced_tsne</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">df_reduced_tsne_cluster</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">=</span> <span class="n">clusters</span>
@@ -9146,17 +9234,21 @@ Davies Bouldin = 20%</p>
 <span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span><span class="n">df_reduced_tsne_cluster</span><span class="p">,</span>
-                             <span class="n">target</span><span class="o">=</span><span class="s2">"cluster"</span><span class="p">,</span>
-                             <span class="n">legend_title</span><span class="o">=</span><span class="s2">"Cluster"</span><span class="p">,</span>
-                             <span class="n">title</span><span class="o">=</span><span class="s1">'t-SNE, 2 Components'</span><span class="p">,</span>
-                             <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span><span class="n">pca_df_cluster</span><span class="p">,</span>
-                             <span class="n">target</span><span class="o">=</span><span class="s2">"cluster"</span><span class="p">,</span>
-                             <span class="n">legend_title</span><span class="o">=</span><span class="s2">"Cluster"</span><span class="p">,</span>
-                             <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span>
-                             <span class="n">title</span><span class="o">=</span><span class="s1">'PCA, 2 Components'</span><span class="p">,</span>
-                             <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span>
+    <span class="n">df_reduced_tsne_cluster</span><span class="p">,</span>
+    <span class="n">target</span><span class="o">=</span><span class="s2">"cluster"</span><span class="p">,</span>
+    <span class="n">legend_title</span><span class="o">=</span><span class="s2">"Cluster"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"t-SNE, 2 Components"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">component_scatter_plot</span><span class="p">(</span>
+    <span class="n">pca_df_cluster</span><span class="p">,</span>
+    <span class="n">target</span><span class="o">=</span><span class="s2">"cluster"</span><span class="p">,</span>
+    <span class="n">legend_title</span><span class="o">=</span><span class="s2">"Cluster"</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="o">=</span><span class="s2">"PC"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"PCA, 2 Components"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Comparison of Component Analysis Methods"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -9188,36 +9280,33 @@ Davies Bouldin = 20%</p>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span>
 
 <span class="n">importance_order</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'quality'</span><span class="p">,</span>
-    <span class="s1">'alcohol'</span><span class="p">,</span>
-    <span class="s1">'sulphates'</span><span class="p">,</span>
-    <span class="s1">'volatile acidity'</span><span class="p">,</span>
-    <span class="s1">'density'</span><span class="p">,</span>
-    <span class="s1">'citric acid'</span><span class="p">,</span>
-    <span class="s1">'total sulfur dioxide'</span><span class="p">,</span>
-    <span class="s1">'chlorides'</span><span class="p">,</span>
-    <span class="s1">'fixed acidity'</span><span class="p">,</span>
-    <span class="s1">'free sulfur dioxide'</span><span class="p">,</span>
-    <span class="s1">'residual sugar'</span><span class="p">,</span>
-    <span class="s1">'pH'</span>
+    <span class="s2">"quality"</span><span class="p">,</span>
+    <span class="s2">"alcohol"</span><span class="p">,</span>
+    <span class="s2">"sulphates"</span><span class="p">,</span>
+    <span class="s2">"volatile acidity"</span><span class="p">,</span>
+    <span class="s2">"density"</span><span class="p">,</span>
+    <span class="s2">"citric acid"</span><span class="p">,</span>
+    <span class="s2">"total sulfur dioxide"</span><span class="p">,</span>
+    <span class="s2">"chlorides"</span><span class="p">,</span>
+    <span class="s2">"fixed acidity"</span><span class="p">,</span>
+    <span class="s2">"free sulfur dioxide"</span><span class="p">,</span>
+    <span class="s2">"residual sugar"</span><span class="p">,</span>
+    <span class="s2">"pH"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">overall_stats</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 
-<span class="n">clusters</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="s1">'cluster'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
 <span class="n">cluster_desc</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">2</span><span class="p">:</span> <span class="s2">"These wines are characterized by a slightly lower citric acid and alcohol content, offering a subtly smoother and lighter taste profile"</span><span class="p">,</span>
     <span class="mi">3</span><span class="p">:</span> <span class="s2">"This selection stands out for its notably lower volatile acidity and higher citric acid and alcohol levels, providing a robust flavor with a distinctive sharpness"</span><span class="p">,</span>
     <span class="mi">5</span><span class="p">:</span> <span class="s2">"Wines in this cluster are distinguished by their higher residual sugar and chloride content, offering a sweeter, more pronounced taste with a hint of saltiness"</span><span class="p">,</span>
-
     <span class="mi">1</span><span class="p">:</span> <span class="s2">"Featuring a lower level of fixed acidity and citric acid, these wines are milder and less acidic, ideal for those who enjoy a softer palate"</span><span class="p">,</span>
-
     <span class="mi">4</span><span class="p">:</span> <span class="s2">"This group is unique for its significantly higher fixed acidity and density, resulting in wines that are more full-bodied and intense"</span><span class="p">,</span>
-
 <span class="p">}</span>
 <span class="k">for</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
-    <span class="n">_df</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="n">source_df_cluster</span><span class="p">[</span><span class="s1">'cluster'</span><span class="p">]</span> <span class="o">==</span> <span class="n">cluster</span><span class="p">]</span>
+    <span class="n">_df</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="n">source_df_cluster</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cluster</span><span class="p">]</span>
     <span class="n">cluster_stats</span> <span class="o">=</span> <span class="n">_df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
     <span class="n">overall_std</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
     <span class="n">overall_mean</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -9229,26 +9318,36 @@ Davies Bouldin = 20%</p>
     <span class="n">markdown_text</span> <span class="o">+=</span> <span class="s2">"```</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'cluster'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="s1">'quality_over_7_or_more'</span><span class="p">]:</span>
-            <span class="n">u_stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">mannwhitneyu</span><span class="p">(</span><span class="n">_df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">'two-sided'</span><span class="p">)</span>
-            <span class="n">mean_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'mean'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'mean'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"cluster"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"quality_over_7_or_more"</span><span class="p">]:</span>
+            <span class="n">u_stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">mannwhitneyu</span><span class="p">(</span>
+                <span class="n">_df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">alternative</span><span class="o">=</span><span class="s2">"two-sided"</span>
+            <span class="p">)</span>
+            <span class="n">mean_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
 
             <span class="n">mean_z_score</span> <span class="o">=</span> <span class="n">mean_diff</span> <span class="o">/</span> <span class="n">overall_std</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
             <span class="n">pooled_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-                <span class="p">((</span><span class="n">n_cluster</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">())</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_overall</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">overall_std</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span> <span class="o">/</span> <span class="p">(</span>
-                            <span class="n">n_cluster</span> <span class="o">+</span> <span class="n">n_overall</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="n">n_cluster</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">n_overall</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">overall_std</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+                <span class="p">)</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">n_cluster</span> <span class="o">+</span> <span class="n">n_overall</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span>
 
             <span class="n">cohen_d</span> <span class="o">=</span> <span class="n">mean_diff</span> <span class="o">/</span> <span class="n">pooled_std</span>
 
             <span class="k">if</span> <span class="n">p_val</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cohen_d</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
-                <span class="n">median_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'50%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'50%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
-                <span class="n">q1_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'25%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'25%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
-                <span class="n">q3_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'75%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'75%'</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+                <span class="n">median_diff</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"50%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">q1_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"25%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"25%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+                <span class="n">q3_diff</span> <span class="o">=</span> <span class="n">cluster_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"75%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">-</span> <span class="n">overall_stats</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"75%"</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
                 <span class="n">q1_z_score</span> <span class="o">=</span> <span class="n">q1_diff</span> <span class="o">/</span> <span class="n">overall_std</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
                 <span class="n">q3_z_score</span> <span class="o">=</span> <span class="n">q3_diff</span> <span class="o">/</span> <span class="n">overall_std</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
 
                 <span class="n">markdown_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">col</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="n">markdown_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"  P-val: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_val</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> &lt; 0.05 (u_stat=</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">u_stat</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="n">markdown_text</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"  P-val: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">p_val</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> &lt; 0.05 (u_stat=</span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">u_stat</span><span class="p">)</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="p">)</span>
 
                 <span class="n">markdown_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"  mean: </span><span class="si">{</span><span class="n">_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">mean_diff</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2"> | z=</span><span class="si">{</span><span class="n">mean_z_score</span><span class="si">:</span><span class="s2">+.2f</span><span class="si">}</span><span class="s2"> | Cohen's d*=</span><span class="si">{</span><span class="n">cohen_d</span><span class="si">:</span><span class="s2">+.2f</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>
 
@@ -9260,9 +9359,13 @@ Davies Bouldin = 20%</p>
 
     <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_text</span><span class="p">))</span>
 
-<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">"""</span>
-<span class="s2">\* Cohen's d measures the effect size between two groups using the pooled standard deviation, a combined measure of both groups' variability. Unlike the Z-Score, which compares individual scores to a group average, Cohen's d is better for comparing two distinct groups because it specifically addresses their relative difference in the context of their combined variability</span>
-<span class="s2">"""</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span>
+    <span class="n">Markdown</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">\* Cohen's d measures the effect size between two groups using the pooled standard deviation, a combined measure of both groups' variability. Unlike the Z-Score, which compares individual scores to a group average, Cohen's d is better for comparing two distinct groups because it specifically addresses their relative difference in the context of their combined variability</span>
+<span class="sd">"""</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9544,7 +9647,9 @@ Davies Bouldin = 20%</p>
 <span class="k">for</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
     <span class="n">_df</span> <span class="o">=</span> <span class="n">source_df_cluster</span><span class="p">[</span><span class="n">source_df_cluster</span><span class="p">[</span><span class="s2">"cluster"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cluster</span><span class="p">]</span>
 
-    <span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""Cluster </span><span class="si">{</span><span class="n">cluster</span><span class="si">}</span>
+    <span class="n">display</span><span class="p">(</span>
+        <span class="n">Markdown</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"""Cluster </span><span class="si">{</span><span class="n">cluster</span><span class="si">}</span>
 <span class="s2">        </span>
 <span class="s2">        - n: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="si">}</span>
 <span class="s2">        </span>
@@ -9558,7 +9663,9 @@ Davies Bouldin = 20%</p>
 <span class="s2">        median: </span><span class="si">{</span><span class="n">_df</span><span class="p">[</span><span class="s2">"citric acid"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span>
 <span class="s2">        std: </span><span class="si">{</span><span class="n">_df</span><span class="p">[</span><span class="s2">"citric acid"</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span>
 
-<span class="s2">"""</span><span class="p">))</span>
+<span class="s2">"""</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9705,10 +9812,15 @@ DBSCAN Silhouette Score with eps=6: 0.7014368933775703
 <span class="n">source_df_reduced</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">source_df_standardized</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">source_df_reduced</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">source_df_reduced</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">clusters</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'DBSCAN Clustering Results'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'PCA Component 1'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'PCA Component 2'</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">source_df_reduced</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">source_df_reduced</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">hue</span><span class="o">=</span><span class="n">clusters</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"DBSCAN Clustering Results"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"PCA Component 1"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"PCA Component 2"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="n">clusters</span>
 </pre></div>
